@@ -9,6 +9,8 @@
 #include "StructFisica.h"
 #include <vector>
 #include <iostream>
+#include <fstream>
+#include <string>
 
 #define PIXEL 1300
 
@@ -33,6 +35,8 @@ public:
 	void AgregarFigura(figura* OBJETO);
 	
 	void PintarFiguras();
+
+	void CargarFigurasTxt();
 
 	void SumarPuntos(int Puntos);
 

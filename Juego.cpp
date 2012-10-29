@@ -4,6 +4,15 @@ Juego::Juego(void)
 {
 	CantidadPollos=1; //Solo hay un pollo en el Mundo
 	Puntos=0;
+
+	//Las imagenes hacen parte del Juego
+	dbLoadImage ( "PolloVolador2.bmp",2);
+	dbLoadImage ( "alcon.bmp",3);
+	dbLoadImage ( "ornitorrinco.bmp",4);
+	dbLoadImage	( "obstaculoMadera.bmp",5);
+	dbLoadImage ( "obstaculoMaderaAcostado.bmp",6);
+	dbLoadImage ( "Huevo.bmp",7);
+
 }
 
 Juego::~Juego(void)
@@ -27,6 +36,37 @@ void Juego::PintarFiguras()
 		Figuras.at(i)->dibujar();
 			
 	}
+
+}
+
+void Juego::CargarFigurasTxt()
+{
+
+	int posx;
+	int posy;
+	int IDSprite;
+	int IDImage;
+	string TipoObjeto;
+	ifstream Map("Mundo1.txt");
+
+	while(!Map.eof())
+	{
+		Map >> IDSprite >> IDImage >> posx >> posy >> TipoObjeto;
+		if (TipoObjeto=="Pollo")
+		{
+			AgregarFigura(new pollo(IDImage,IDSprite,posx,posy));
+
+		}
+		if (TipoObjeto=="Obstaculo")
+		{
+			AgregarFigura(new obstaculo(IDImage,IDSprite,posx,posy));
+
+		}
+
+	}
+	
+	Map.close();
+
 }
 
 void Juego::SumarPuntos(int Puntos)

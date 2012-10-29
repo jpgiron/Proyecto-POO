@@ -29,11 +29,11 @@ public:
 	virtual void dibujar();
 	virtual void moveBird(){}
 	int RetornarIDSprite();
-	/* ??????  */
 
 	virtual void  rotateBird(){}
 	virtual float calculoAngulo(){ return 0.1;}
 	virtual float calculoVelocidad(){ return 0.1;}
+	
 };
 
 #endif;
