@@ -20,7 +20,9 @@ Juego::~Juego(void)
 
 }
 
-void Juego::AgregarFigura(figura* OBJETO)
+/* Agrega un objeto derivado de Figura en el Vector Figuras   */
+
+void Juego::AgregarFigura(figura* OBJETO)   
 {
 	pareja Temp;
     Figuras.push_back(OBJETO); //Agrega una Figura al mundo.
@@ -28,7 +30,7 @@ void Juego::AgregarFigura(figura* OBJETO)
 	ParejasPos.push_back(Temp);
 }
 
-
+/*  Pinta en el Mundo Las Figuras Cargadas   */
 void Juego::PintarFiguras()
 {
 	int i = 0;
@@ -39,6 +41,10 @@ void Juego::PintarFiguras()
 	}
 
 }
+
+/*  Carga las Figuras desde un archivo TXT. el orden del archivo es :
+
+	ID_Sprite(int) ID_Imagen(int) CoordX(int) CoordY(int) Identificador(string)*/
 
 void Juego::CargarFigurasTxt()
 {
@@ -71,12 +77,16 @@ void Juego::CargarFigurasTxt()
 
 }
 
+/* ACtualiza los puntos obtenidos en el juego  */
+
 void Juego::SumarPuntos(int Puntos)
 {
 
 	this->Puntos+=Puntos;
 	MostrarPuntaje();
 }
+
+/* Muestra el Puntaje en Pantalla  */
 
 void Juego::MostrarPuntaje()
 {
@@ -87,6 +97,8 @@ void Juego::MostrarPuntaje()
 	
 }
 
+/* Actualiza la Posicion del Pollo */
+
 void Juego::MoverPollo(int iX,int iY)
 {
 
@@ -95,12 +107,16 @@ void Juego::MoverPollo(int iX,int iY)
 		
 }
 
+/* Actualiza el Angulo de disparo del Pollo */
+
 void Juego::RotarPollo()
 {
 	
 	Figuras.at(0)->rotateBird();
 
 }
+
+/* Verifica si la posicion del Mouse esta dentro de un Objeto Pollo  */
 
 void Juego::VerificarMousePos(int iX,int iY,int iBoton)
 {
@@ -135,6 +151,8 @@ void Juego::VerificarMousePos(int iX,int iY,int iBoton)
 		}
 	}
 }
+
+/* Mueve el Pollo Con un movimiento Proyectil dependiendo del angulo y la velocidad Obtenida */
 
 void Juego::MovProyectilPollo()
 {
@@ -178,6 +196,8 @@ void Juego::MovProyectilPollo()
 		}
 	}
 }
+
+/* Verifica si algun objeto del vector Pollo Collisiona con un obstaculo o con un Huevo */
 
 int Juego::VerificarColisionObjetos(pareja PosPollo) //Retorna un entero que representa la ubicacion de la Figura con la que el pollo Colisiono
 {
