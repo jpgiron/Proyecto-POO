@@ -20,7 +20,8 @@ protected:
 	string Identificador;
 public:
 	
-	figura(int ID_Im,int ID_Sprite,int PosX,int PosY):ID_Image(ID_Im),ID(ID_Sprite),posx(PosX),posy(PosY){}
+	figura(int ID_Im,int ID_Sprite,int PosX,int PosY,string Identi):ID_Image(ID_Im),ID(ID_Sprite),posx(PosX),posy(PosY),
+																	Identificador(Identi){}
 	~figura(void);
 	//sets
 	void setIdentificador(string NombreFigura);

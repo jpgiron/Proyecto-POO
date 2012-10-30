@@ -14,7 +14,7 @@ protected:
 	int puntaje;
 	
 public:
-	obstaculo(int ID_Imagen,int ID_Sprite,int posx,int posy):figura(ID_Imagen,ID_Sprite,posx,posy){puntaje=10;}
+	obstaculo(int ID_Imagen,int ID_Sprite,int posx,int posy,string Identi):figura(ID_Imagen,ID_Sprite,posx,posy,identi){puntaje=10;}
 	~obstaculo(){};
 
 	void setPuntaje(int puntaje);
