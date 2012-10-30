@@ -24,7 +24,8 @@ class Juego
 private:
 	int CantidadPollos;
 	vector<figura*> Figuras;
-	vector<pareja> ParejasPos;
+	vector<pareja>  ParejasPos;
+	vector<pollo*>  Pollos;
 	fisica MotorFisico;
 	int Puntos;
 

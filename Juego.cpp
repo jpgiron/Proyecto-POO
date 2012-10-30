@@ -2,39 +2,40 @@
 
 Juego::Juego(void)
 {
-	CantidadPollos=1; //Solo hay un pollo en el Mundo
-	Puntos=0;
+	CantidadPollos	=	1; //Solo hay un pollo en el Mundo
+	Puntos			=	0;
 
 	//Las imagenes hacen parte del Juego
-	dbLoadImage ( "PolloVolador2.bmp",2);
-	dbLoadImage ( "alcon.bmp",3);
-	dbLoadImage ( "ornitorrinco.bmp",4);
-	dbLoadImage	( "obstaculoMadera.bmp",5);
+	dbLoadImage ( "PolloVolador2.bmp",			2);
+	dbLoadImage ( "alcon.bmp",					3);
+	dbLoadImage ( "ornitorrinco.bmp",			4);
+	dbLoadImage	( "obstaculoMadera.bmp",		5);
 	dbLoadImage ( "obstaculoMaderaAcostado.bmp",6);
-	dbLoadImage ( "Huevo.bmp",7);
+	dbLoadImage ( "Huevo.bmp",					7);
 
 }
 
-Juego::~Juego(void)
+Juego::~Juego(void)	
 {
+
 }
 
 void Juego::AgregarFigura(figura* OBJETO)
 {
 	pareja Temp;
     Figuras.push_back(OBJETO); //Agrega una Figura al mundo.
-	Temp=OBJETO->getCoord(); //obtiene las Coordenadas e cada Figura
+	Temp=OBJETO->getCoord();   //obtiene las Coordenadas e cada Figura
 	ParejasPos.push_back(Temp);
 }
 
 
 void Juego::PintarFiguras()
 {
-	int i=0;
-	for(;i<(int) Figuras.size();i++)
+	int i = 0;
+	for(;i <(int) Figuras.size();i++)
 	{
 		Figuras.at(i)->dibujar();
-			
+		
 	}
 
 }
@@ -52,14 +53,15 @@ void Juego::CargarFigurasTxt()
 	while(!Map.eof())
 	{
 		Map >> IDSprite >> IDImage >> posx >> posy >> TipoObjeto;
-		if (TipoObjeto=="Pollo")
+		if (TipoObjeto == "Pollo")
 		{
-			AgregarFigura(new pollo(IDImage,IDSprite,posx,posy));
+			AgregarFigura(new pollo(IDImage,IDSprite,posx,posy,TipoObjeto));
+			Pollos.push_back(new pollo(IDImage,IDSprite,posx,posy,TipoObjeto));
 
 		}
-		if (TipoObjeto=="Obstaculo")
+		if (TipoObjeto == "Obstaculo")
 		{
-			AgregarFigura(new obstaculo(IDImage,IDSprite,posx,posy));
+			AgregarFigura(new obstaculo(IDImage,IDSprite,posx,posy,TipoObjeto));
 
 		}
 
@@ -185,7 +187,7 @@ int Juego::VerificarColisionObjetos(pareja PosPollo) //Retorna un entero que rep
 	{
 		int ID;
 		ID = Figuras.at(i)->RetornarIDSprite();
-		if ( dbSpriteCollision(5,ID) == 1 )
+		if ( dbSpriteCollision(7,ID) == 1 )
 		{
 			return i;
 		}
