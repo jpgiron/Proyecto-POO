@@ -8,7 +8,7 @@ class pollo:public figura
 {
 private:
 	int pixel;
-
+	float Angle;
 public:
 	pollo(int ID_Im,int ID_Sprite,int posx,int posy):figura(ID_Im,ID_Sprite,posx,posy){pixel=0;}
 	~pollo(void);
@@ -18,5 +18,6 @@ public:
 	void  rotateBird();
 	float calculoAngulo();
 	float calculoVelocidad();
-	void dibujar();
+	void  dibujar();
+	float RetornarAngulo();
 };

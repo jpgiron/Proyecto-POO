@@ -70,7 +70,8 @@ float pollo::calculoVelocidad()
 
 float pollo::calculoAngulo()
 {
-	return (abs(dbSpriteAngle(ID))*3.1415)/180;
+	Angle=abs(dbSpriteAngle(ID)) //En grados;
+	return (Angle*3.1415)/180;
 }
 
 
@@ -97,4 +98,9 @@ void pollo::dibujar()
 	//dbSprite(ID,posx-22,posy-22,ID_Image);
 	//dbOffsetSprite(ID,dbSpriteWidth(ID)/2,dbSpriteHeight(ID)/2);
 	dbSync();
+}
+
+int	 pollo::RetornarAngulo()
+{
+	return Angle;
 }
