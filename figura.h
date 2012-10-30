@@ -17,12 +17,13 @@ protected:
 	int ID;
 	int vidas;
 	int ID_Image;
-
+	string Identificador;
 public:
 	
 	figura(int ID_Im,int ID_Sprite,int PosX,int PosY):ID_Image(ID_Im),ID(ID_Sprite),posx(PosX),posy(PosY){}
 	~figura(void);
 	//sets
+	void setIdentificador(string NombreFigura);
 	virtual void setCoords(int PosX,int PosY);
 	
 	Pareja getCoord();
@@ -33,7 +34,7 @@ public:
 	virtual void  rotateBird(){}
 	virtual float calculoAngulo(){ return 0.1;}
 	virtual float calculoVelocidad(){ return 0.1;}
-	
+	string getIdentificador();
 };
 
 #endif;

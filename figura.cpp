@@ -5,6 +5,11 @@ figura::~figura(void)
 {
 }
 
+void figura::setIdentificador(string NombreFigura)
+{
+	Identificador=NombreFigura;
+}
+
 void figura::setCoords(int PosX,int PosY)
 {
 	posx=PosX;
@@ -30,4 +35,8 @@ int figura::RetornarIDSprite()
 {
 	return ID;
 
+}
+string figura::getIdentificador()
+{
+	return Identificador;
 }
