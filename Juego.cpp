@@ -2,7 +2,7 @@
 
 Juego::Juego(void)
 {
-	CantidadPollos	=	1; //Solo hay un pollo en el Mundo
+	CantidadPollos	=	0; //Solo hay un pollo en el Mundo
 	Puntos			=	0;
 
 	//Las imagenes hacen parte del Juego
@@ -57,7 +57,7 @@ void Juego::CargarFigurasTxt()
 	int IDSprite;
 	int IDImage;
 	string TipoObjeto;
-	ifstream Map("Mundo1.txt");
+	ifstream Map("Mundo2.txt");
 
 	while(!Map.eof())
 	{
@@ -66,7 +66,7 @@ void Juego::CargarFigurasTxt()
 		{
 			AgregarFigura(new pollo(IDImage,IDSprite,posx,posy,TipoObjeto));
 			Pollos.push_back(new pollo(IDImage,IDSprite,posx,posy,TipoObjeto));
-			//CantidadPollos++;
+			CantidadPollos++;
 		}
 		if (TipoObjeto == "Obstaculo")
 		{
@@ -102,23 +102,23 @@ void Juego::MostrarPuntaje()
 
 /* Actualiza la Posicion del Pollo */
 
-void Juego::MoverPollo(int iX,int iY)
+void Juego::MoverPollo(int iX,int iY,int IDSprite)
 {
 
 	/*Figuras.at(0)->setCoords(iX,iY);
 	Figuras.at(0)->moveBird();*/
-	Pollos.at(0)->setCoords(iX,iY);
-	Pollos.at(0)->moveBird();
+	Pollos.at(IDSprite)->setCoords(iX,iY);
+	Pollos.at(IDSprite)->moveBird();
 		
 }
 
 /* Actualiza el Angulo de disparo del Pollo */
 
-void Juego::RotarPollo()
+void Juego::RotarPollo(int IDSprite)
 {
 	
 	//Figuras.at(0)->rotateBird();
-	Pollos.at(0)->rotateBird();
+	Pollos.at(IDSprite)->rotateBird();
 }
 
 /* Verifica si la posicion del Mouse esta dentro de un Objeto Pollo  */
@@ -133,10 +133,11 @@ void Juego::VerificarMousePos(int iX,int iY,int iBoton)
 	posy=P.second;*/
 	double resultado;
 	int ptr=0;
+	int cPollos;
+	cPollos = (int) Pollos.size()-CantidadPollos;
 	if (CantidadPollos > 0)
-	//while ( ptr < CantidadPollos )
 	{
-		pareja P=Pollos.at(0)->getCoord();
+		pareja P=Pollos.at(cPollos)->getCoord();
 		int posx,posy;
 		posx=P.first;
 		posy=P.second;
@@ -152,11 +153,11 @@ void Juego::VerificarMousePos(int iX,int iY,int iBoton)
 			{
 				if (iBoton==1)
 				{
-					MoverPollo(iX,iY);
+					MoverPollo(iX,iY,cPollos);
 				}
 				if (iBoton==2)
 				{
-					RotarPollo();
+					RotarPollo(cPollos);
 				}
 			}
 			
@@ -174,35 +175,38 @@ void Juego::MovProyectilPollo()
 	float Vo, Angle;
 	pareja P;
 	int Verificar;
+	int cPollos;
+	cPollos = (int) Pollos.size()-CantidadPollos;
 	if (CantidadPollos > 0 ) //Se ejecuta Si hay Pollo en El juego.
 	{
 		//Vo    = Figuras.at(0)->calculoVelocidad();
 		//Angle = Figuras.at(0)->calculoAngulo();
 		//P   = Figuras.at(0)->getCoord();
-		Angle = Pollos.at(0)->calculoAngulo();
-		Vo	  = Pollos.at(0)->calculoVelocidad();
-		P     = Pollos.at(0)->getCoord();
-		PosXo = P.first+22;	//22 representa la distancia del vertice superior izquiero al centro en x
-		PosYo = P.second+22;	//22 representa la distancia del vertice superior izquiero al centro en Y
+		Angle = Pollos.at(cPollos)->calculoAngulo();
+		Vo	  = Pollos.at(cPollos)->calculoVelocidad();
+		P     = Pollos.at(cPollos)->getCoord();
+		
+		PosXo = P.first+22;								//22 representa la distancia del vertice superior izquiero al centro en x
+		PosYo = P.second+22;							//22 representa la distancia del vertice superior izquiero al centro en Y
 		
 		for ( ; i<PIXEL ; i+=4)
 		{
 			y = MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle);
 			MostrarPuntaje();
 			//P = Figuras.at(0)->getCoord();
-			P = Pollos.at(0)->getCoord();
+			P = Pollos.at(cPollos)->getCoord();
 			Verificar = VerificarColisionObjetos(P);
 					
 			if (Verificar == -1)  // -1 significa que no colisiono con nada
 			{
-				MoverPollo(i+124,y);
+				MoverPollo(i+124,y,cPollos);
 			}
 
 			else                  // Elimina las Figuras que Colisionaron
 			{
 				//dbDeleteSprite(Figuras.at(0)->RetornarIDSprite());
 				//dbDeleteSprite(Figuras.at(Verificar)->RetornarIDSprite());
-				dbDeleteSprite(Pollos.at(0)->RetornarIDSprite());
+				dbDeleteSprite(Pollos.at(cPollos)->RetornarIDSprite());
 				dbDeleteSprite(Figuras.at(Verificar)->RetornarIDSprite());
 				SumarPuntos(500);
 				MostrarPuntaje();
@@ -218,17 +222,35 @@ void Juego::MovProyectilPollo()
 int Juego::VerificarColisionObjetos(pareja PosPollo) //Retorna un entero que representa la ubicacion de la Figura con la que el pollo Colisiono
 {
 	int i=1;
-	
+	int cPollos;
+	cPollos = (int) Pollos.size()-CantidadPollos;
 	for ( ; i < (int) Figuras.size() ; i++ )
 	{
 		int ID;
 		ID = Figuras.at(i)->RetornarIDSprite();
 		
-		if ( dbSpriteCollision(7,ID) == 1 )
+		if ( dbSpriteCollision(cPollos,ID) == 1 )
 		{
+			
 			return i;
 		}
 	}
 	return -1;
 	
+}
+
+void Juego::CargarPolloLanzar()
+{
+	int cPollos;
+	cPollos = (int) Pollos.size()-CantidadPollos; //Selecciona un Pollo a la vez del Vector Pollos
+	//if (( cPollos - CantidadPollos ) == 0 )
+	//{
+
+	MoverPollo(300,530,cPollos);
+	CantidadPollos--;
+	char string[200];
+	sprintf ( string, "CantidadP= %d SizeV = %d",CantidadPollos,(int) Pollos.size());
+	dbText (650,600, string );
+	dbSetTextSize(30);
+
 }

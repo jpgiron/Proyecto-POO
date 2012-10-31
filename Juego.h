@@ -23,10 +23,15 @@ class Juego
 
 private:
 	int CantidadPollos;
+
 	vector<figura*> Figuras;
+
 	vector<pareja>  ParejasPos;
+	
 	vector<pollo*>  Pollos;
+	
 	fisica MotorFisico;
+	
 	int Puntos;
 
 public:
@@ -41,16 +46,18 @@ public:
 
 	void SumarPuntos(int Puntos);
 
-	void MoverPollo(int iX,int iY);
+	void MoverPollo(int iX,int iY,int IDSprite);
 	
 	void MostrarPuntaje();
 
-	void RotarPollo();
+	void RotarPollo(int IDSprite);
 
 	void VerificarMousePos(int iX,int iY,int iBoton);
 
 	void MovProyectilPollo();
 
-	int VerificarColisionObjetos(pareja PosPollo);
+	int  VerificarColisionObjetos(pareja PosPollo);
+
+	void CargarPolloLanzar();
 };
 #endif
