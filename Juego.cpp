@@ -17,7 +17,10 @@ Juego::Juego(void)
 
 Juego::~Juego(void)	
 {
-
+	for(int k = 0 ; k<(int) Figuras.size() ; k++){
+		dbDeleteImage(k);
+		dbDeleteSprite(k);
+	}
 }
 
 /* Agrega un objeto derivado de Figura en el Vector Figuras   */
