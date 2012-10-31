@@ -63,7 +63,7 @@ void Juego::CargarFigurasTxt()
 		{
 			AgregarFigura(new pollo(IDImage,IDSprite,posx,posy,TipoObjeto));
 			Pollos.push_back(new pollo(IDImage,IDSprite,posx,posy,TipoObjeto));
-
+			//CantidadPollos++;
 		}
 		if (TipoObjeto == "Obstaculo")
 		{
@@ -102,8 +102,10 @@ void Juego::MostrarPuntaje()
 void Juego::MoverPollo(int iX,int iY)
 {
 
-	Figuras.at(0)->setCoords(iX,iY);
-	Figuras.at(0)->moveBird();
+	/*Figuras.at(0)->setCoords(iX,iY);
+	Figuras.at(0)->moveBird();*/
+	Pollos.at(0)->setCoords(iX,iY);
+	Pollos.at(0)->moveBird();
 		
 }
 
@@ -112,22 +114,29 @@ void Juego::MoverPollo(int iX,int iY)
 void Juego::RotarPollo()
 {
 	
-	Figuras.at(0)->rotateBird();
-
+	//Figuras.at(0)->rotateBird();
+	Pollos.at(0)->rotateBird();
 }
 
 /* Verifica si la posicion del Mouse esta dentro de un Objeto Pollo  */
 
 void Juego::VerificarMousePos(int iX,int iY,int iBoton)
 {
-	
+	/*
 	pareja P=Figuras.at(0)->getCoord();
+	
 	int posx,posy;
 	posx=P.first;
-	posy=P.second;
+	posy=P.second;*/
 	double resultado;
+	int ptr=0;
 	if (CantidadPollos > 0)
+	//while ( ptr < CantidadPollos )
 	{
+		pareja P=Pollos.at(0)->getCoord();
+		int posx,posy;
+		posx=P.first;
+		posy=P.second;
 		if (iX>=posx-24 && iY >=posy-22 && iX <=posx+24 && iY <=posy+22 )
 		{
 			
@@ -164,19 +173,21 @@ void Juego::MovProyectilPollo()
 	int Verificar;
 	if (CantidadPollos > 0 ) //Se ejecuta Si hay Pollo en El juego.
 	{
-		Vo    = Figuras.at(0)->calculoVelocidad();
-		Angle = Figuras.at(0)->calculoAngulo();
+		//Vo    = Figuras.at(0)->calculoVelocidad();
+		//Angle = Figuras.at(0)->calculoAngulo();
+		//P   = Figuras.at(0)->getCoord();
+		Angle = Pollos.at(0)->calculoAngulo();
+		Vo	  = Pollos.at(0)->calculoVelocidad();
+		P     = Pollos.at(0)->getCoord();
+		PosXo = P.first+22;	//22 representa la distancia del vertice superior izquiero al centro en x
+		PosYo = P.second+22;	//22 representa la distancia del vertice superior izquiero al centro en Y
 		
-		P = Figuras.at(0)->getCoord();
-		PosXo=P.first+22;	//22 representa la distanci del vertice superior izquiero al centro en x
-		PosYo=P.second+22;	//22 representa la distanci del vertice superior izquiero al centro en Y
-		
-		for (;i<PIXEL;i+=4)
+		for ( ; i<PIXEL ; i+=4)
 		{
-			y=MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle);
+			y = MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle);
 			MostrarPuntaje();
-			P = Figuras.at(0)->getCoord();
-
+			//P = Figuras.at(0)->getCoord();
+			P = Pollos.at(0)->getCoord();
 			Verificar = VerificarColisionObjetos(P);
 					
 			if (Verificar == -1)  // -1 significa que no colisiono con nada
@@ -186,7 +197,9 @@ void Juego::MovProyectilPollo()
 
 			else                  // Elimina las Figuras que Colisionaron
 			{
-				dbDeleteSprite(Figuras.at(0)->RetornarIDSprite());
+				//dbDeleteSprite(Figuras.at(0)->RetornarIDSprite());
+				//dbDeleteSprite(Figuras.at(Verificar)->RetornarIDSprite());
+				dbDeleteSprite(Pollos.at(0)->RetornarIDSprite());
 				dbDeleteSprite(Figuras.at(Verificar)->RetornarIDSprite());
 				SumarPuntos(500);
 				MostrarPuntaje();
@@ -207,12 +220,12 @@ int Juego::VerificarColisionObjetos(pareja PosPollo) //Retorna un entero que rep
 	{
 		int ID;
 		ID = Figuras.at(i)->RetornarIDSprite();
+		
 		if ( dbSpriteCollision(7,ID) == 1 )
 		{
 			return i;
 		}
 	}
 	return -1;
-
 	
 }

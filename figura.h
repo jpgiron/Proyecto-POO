@@ -29,12 +29,12 @@ public:
 	
 	Pareja getCoord();
 	virtual void dibujar();
-	virtual void moveBird(){}
+	//virtual void moveBird(){}
 	int RetornarIDSprite();
 
-	virtual void  rotateBird(){}
-	virtual float calculoAngulo(){ return 0.1;}
-	virtual float calculoVelocidad(){ return 0.1;}
+	//virtual void  rotateBird(){}
+	//virtual float calculoAngulo(){ return 0.1;}
+	//virtual float calculoVelocidad(){ return 0.1;}
 	string getIdentificador();
 };
 
