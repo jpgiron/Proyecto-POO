@@ -60,7 +60,7 @@ void Juego::CargarFigurasTxt()
 	int IDSprite;
 	int IDImage;
 	string TipoObjeto;
-	ifstream Map("Mundo4.txt");
+	ifstream Map("Mundo3.txt");
 
 	while(!Map.eof())
 	{
@@ -84,8 +84,8 @@ void Juego::CargarFigurasTxt()
 
 		if (TipoObjeto == "Obstaculo" )
 		{
-			AgregarFigura(new obstaculo(IDImage,IDSprite,posx,posy,TipoObjeto));
-			Enemigos.push_back(new obstaculo(IDImage,IDSprite,posx,posy,TipoObjeto));
+			AgregarFigura(new ParedMadera(IDImage,IDSprite,posx,posy,TipoObjeto));
+			Enemigos.push_back(new ParedMadera(IDImage,IDSprite,posx,posy,TipoObjeto));
 		}
 		if (TipoObjeto == "Huevo")
 		{
@@ -111,7 +111,7 @@ void Juego::SumarPuntos(int Puntos)
 void Juego::MostrarPuntaje()
 {
 	char string[200];
-	sprintf ( string, "Puntaje= %d",Puntos);
+	sprintf ( string, "Puntaje= %d",CantidadAves);
 	dbText (650,600, string );
 	dbSetTextSize(30);
 }
@@ -194,7 +194,7 @@ void Juego::MovProyectilPollo()
 
 		if ( MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle) != -1 )
 		{
-			for ( ; i<PIXEL ; i+=4)
+			for ( ; i<PIXEL ; i+=6)
 			{
 				y = MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle);
 				MostrarPuntaje();
@@ -210,10 +210,9 @@ void Juego::MovProyectilPollo()
 				{
 					dbDeleteSprite(Aves.at(PtrPollo)->RetornarIDSprite());
 					dbDeleteSprite(Enemigos.at(Verificar)->RetornarIDSprite());
-					//Aves.erase(Aves.begin()+PtrPollo);
-					//int p;
-					//p = Figuras.at(Verificar)->;
-					SumarPuntos(500);
+					int p;
+					p = Enemigos.at(Verificar)->getPuntaje();
+					SumarPuntos(p);
 					PtrPollo++;
 					return;
 				}
@@ -234,7 +233,7 @@ void Juego::MovProyectilPollo()
 
 int Juego::VerificarColisionObjetos(pareja PosPollo) 
 {
-	int i=1;
+	int i=0;
 	for ( ; i < (int) Enemigos.size() ; i++ )
 	{
 		int ID;
@@ -251,7 +250,7 @@ int Juego::VerificarColisionObjetos(pareja PosPollo)
 
 void Juego::CargarPolloLanzar()
 {
-	if (CantidadAves > 0)
+	if (CantidadAves > 0 && CantidadHuevos > 0)
 	{
 		if (!VerificarSiHayPollo())
 		{
@@ -284,4 +283,26 @@ bool Juego::VerificarSiHayPollo()
 		}
 	}
 	return false;
+}
+
+void Juego::MensajeJuego()
+{
+	
+	if ( CantidadHuevos == 0 )
+	{
+		char string[200];
+		sprintf ( string,"GANASTE!");
+		dbText (650,300, string );
+		dbSetTextSize(30);
+
+	}
+	if ( CantidadHuevos > 0 && CantidadAves == 0 )
+	{
+		char string[200];
+		sprintf ( string, "GAME OVER!!");
+		dbText (650,300, string );
+		dbSetTextSize(60);
+
+	}
+
 }

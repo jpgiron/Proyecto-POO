@@ -70,5 +70,7 @@ public:
 	void CargarPolloLanzar();
 
 	bool VerificarSiHayPollo();
+
+	void MensajeJuego();
 };
 #endif
