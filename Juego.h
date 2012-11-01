@@ -7,6 +7,11 @@
 #include "pollo.h"
 #include "darkgdk.h"
 #include "StructFisica.h"
+#include "Huevo.h"
+#include "Ave.h"
+#include "Ornitorrinco.h"
+#include "Aguila.h"
+#include "ParedMadera.h"
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -22,17 +27,21 @@ class Juego
 {
 
 private:
-	int CantidadPollos;
+	int CantidadAves;
+
+	int CantidadHuevos;
 
 	vector<figura*> Figuras;
-
-	vector<pareja>  ParejasPos;
 	
-	vector<pollo*>  Pollos;
+	vector<Ave*>  Aves;
+
+	vector<obstaculo*> Enemigos;
 	
 	fisica MotorFisico;
 	
 	int Puntos;
+
+	int PtrPollo;
 
 public:
 	Juego(void);
@@ -59,5 +68,7 @@ public:
 	int  VerificarColisionObjetos(pareja PosPollo);
 
 	void CargarPolloLanzar();
+
+	bool VerificarSiHayPollo();
 };
 #endif

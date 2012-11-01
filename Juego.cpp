@@ -25,6 +25,7 @@ Juego::~Juego(void)
 		dbDeleteImage(k);
 		dbDeleteSprite(k);
 	}
+	
 }
 
 /* Agrega un objeto derivado de Figura en el Vector Figuras   */
@@ -43,6 +44,8 @@ void Juego::PintarFiguras()
 		Figuras.at(i)->dibujar();
 		
 	}
+	
+
 }
 
 /*  Carga las Figuras desde un archivo TXT. el orden del archivo es :
@@ -57,7 +60,7 @@ void Juego::CargarFigurasTxt()
 	int IDSprite;
 	int IDImage;
 	string TipoObjeto;
-	ifstream Map("Mundo3.txt");
+	ifstream Map("Mundo4.txt");
 
 	while(!Map.eof())
 	{
@@ -71,16 +74,24 @@ void Juego::CargarFigurasTxt()
 		{
 			AgregarFigura(new Ornitorrinco(IDImage,IDSprite,posx,posy,TipoObjeto));
 			Aves.push_back(new Ornitorrinco(IDImage,IDSprite,posx,posy,TipoObjeto));
-			
 		}
+
+		if (TipoObjeto == "Aguila")
+		{
+			AgregarFigura(new Aguila(IDImage,IDSprite,posx,posy,TipoObjeto));
+			Aves.push_back(new Aguila(IDImage,IDSprite,posx,posy,TipoObjeto));
+		}
+
 		if (TipoObjeto == "Obstaculo" )
 		{
 			AgregarFigura(new obstaculo(IDImage,IDSprite,posx,posy,TipoObjeto));
+			Enemigos.push_back(new obstaculo(IDImage,IDSprite,posx,posy,TipoObjeto));
 		}
 		if (TipoObjeto == "Huevo")
 		{
 			AgregarFigura(new Huevo(IDImage,IDSprite,posx,posy,TipoObjeto));
-			
+			Enemigos.push_back(new Huevo(IDImage,IDSprite,posx,posy,TipoObjeto));
+			CantidadHuevos++;
 		}
 	}
 	CantidadAves=(int) Aves.size();
@@ -100,8 +111,7 @@ void Juego::SumarPuntos(int Puntos)
 void Juego::MostrarPuntaje()
 {
 	char string[200];
-	//sprintf ( string, "Puntaje= %d SV = %d",Aves.at(0)->getCoord().first,Aves.at(0)->getCoord().second);
-	sprintf (string, "PrtPollo = %f Angle = %d" , Aves.at(PtrPollo)->calculoVelocidad(),Aves.at(PtrPollo)->RetornarAngulo());
+	sprintf ( string, "Puntaje= %d",Puntos);
 	dbText (650,600, string );
 	dbSetTextSize(30);
 }
@@ -119,8 +129,6 @@ void Juego::MoverPollo(int iX,int iY,int IDSprite)
 
 void Juego::RotarPollo(int IDSprite)
 {
-	
-	//Figuras.at(0)->rotateBird();
 	Aves.at(IDSprite)->rotateBird();
 }
 
@@ -184,11 +192,6 @@ void Juego::MovProyectilPollo()
 		CantidadAves--;
 		i=PosXo;
 
-
-		char string[200];
-		//sprintf ( string, "Puntaje= %d SV = %d",Aves.at(0)->getCoord().first,Aves.at(0)->getCoord().second);
-		
-		
 		if ( MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle) != -1 )
 		{
 			for ( ; i<PIXEL ; i+=4)
@@ -206,8 +209,10 @@ void Juego::MovProyectilPollo()
 				else                  // Elimina las Figuras que Colisionaron
 				{
 					dbDeleteSprite(Aves.at(PtrPollo)->RetornarIDSprite());
-					dbDeleteSprite(Figuras.at(Verificar)->RetornarIDSprite());
+					dbDeleteSprite(Enemigos.at(Verificar)->RetornarIDSprite());
 					//Aves.erase(Aves.begin()+PtrPollo);
+					//int p;
+					//p = Figuras.at(Verificar)->;
 					SumarPuntos(500);
 					PtrPollo++;
 					return;
@@ -230,10 +235,10 @@ void Juego::MovProyectilPollo()
 int Juego::VerificarColisionObjetos(pareja PosPollo) 
 {
 	int i=1;
-	for ( ; i < (int) Figuras.size() ; i++ )
+	for ( ; i < (int) Enemigos.size() ; i++ )
 	{
 		int ID;
-		ID = Figuras.at(i)->RetornarIDSprite();
+		ID = Enemigos.at(i)->RetornarIDSprite();
 		int ID_Pollo = Aves.at(PtrPollo)->RetornarIDSprite();
 		if ( dbSpriteCollision(ID_Pollo,ID) == 1 && ID_Pollo != ID)
 		{
@@ -246,7 +251,6 @@ int Juego::VerificarColisionObjetos(pareja PosPollo)
 
 void Juego::CargarPolloLanzar()
 {
-	int cAves;
 	if (CantidadAves > 0)
 	{
 		if (!VerificarSiHayPollo())
