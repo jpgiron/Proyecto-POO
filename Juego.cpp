@@ -130,20 +130,14 @@ void Juego::MoverPollo(int iX,int iY,int IDSprite)
 
 void Juego::RotarPollo(int IDSprite)
 {
-	/*if (Aves.at(IDSprite)->RetornarAngulo() < 10)
+	/* Condicion Necesaria Para para que el Ave solo tenga una rotacion de hasta 90 grados  */
+	if (Aves.at(IDSprite)->RetornarAngulo() < 90)
 	{
 		
+		Aves.at(IDSprite)->rotateBird();
+
 	}
-	else
-	{
-		dbText(0,0,"NOOOOOOOOOOOOOOOOOOOOOOOOOO");
-	}*/
-	Aves.at(IDSprite)->rotateBird();
-	char string[200];
-	sprintf ( string, "Angulo = %d",Aves.at(0)->RetornarAngulo());
-	dbText (100,100, string );
-	dbSetTextSize(30);
-	
+
 }
 
 /* Verifica si la posicion del Mouse esta dentro de un Objeto Pollo  */
