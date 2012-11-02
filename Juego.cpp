@@ -112,7 +112,6 @@ void Juego::MostrarPuntaje()
 {
 	char string[200];
 	sprintf ( string, "Puntaje= %d",Puntos);
-	//sprintf ( string, "Angulo = %d",Aves.at(0)->RetornarAngulo());
 	dbText (650,600, string );
 	dbSetTextSize(30);
 }
@@ -323,7 +322,7 @@ void Juego::MensajeJuego()
 
 void Juego::DecrementarRotacionAve()
 {
-	if (Aves.at(PtrPollo)->RetornarAngulo() >= 0)
+	if (Aves.at(PtrPollo)->RetornarAngulo() != 0)
 	{
 		Aves.at(PtrPollo)->MenosRotateBird();
 	}
