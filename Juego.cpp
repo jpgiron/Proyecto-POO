@@ -60,7 +60,7 @@ void Juego::CargarFigurasTxt()
 	int IDSprite;
 	int IDImage;
 	string TipoObjeto;
-	ifstream Map("Mundo4.txt");
+	ifstream Map("Mundo3.txt");
 
 	while(!Map.eof())
 	{
@@ -112,6 +112,7 @@ void Juego::MostrarPuntaje()
 {
 	char string[200];
 	sprintf ( string, "Puntaje= %d",Puntos);
+	//sprintf ( string, "Angulo = %d",Aves.at(0)->RetornarAngulo());
 	dbText (650,600, string );
 	dbSetTextSize(30);
 }
@@ -129,7 +130,20 @@ void Juego::MoverPollo(int iX,int iY,int IDSprite)
 
 void Juego::RotarPollo(int IDSprite)
 {
+	/*if (Aves.at(IDSprite)->RetornarAngulo() < 10)
+	{
+		
+	}
+	else
+	{
+		dbText(0,0,"NOOOOOOOOOOOOOOOOOOOOOOOOOO");
+	}*/
 	Aves.at(IDSprite)->rotateBird();
+	char string[200];
+	sprintf ( string, "Angulo = %d",Aves.at(0)->RetornarAngulo());
+	dbText (100,100, string );
+	dbSetTextSize(30);
+	
 }
 
 /* Verifica si la posicion del Mouse esta dentro de un Objeto Pollo  */
@@ -163,6 +177,7 @@ void Juego::VerificarMousePos(int iX,int iY,int iBoton)
 				if (iBoton==2)
 				{
 					RotarPollo(PtrPollo);
+					
 				}
 			}
 			
@@ -287,6 +302,10 @@ bool Juego::VerificarSiHayPollo()
 
 void Juego::MensajeJuego()
 {
+	if (CantidadAves > 0)
+	{
+		MostrarPuntaje();
+	}
 	
 	if ( CantidadHuevos == 0 )
 	{
@@ -294,15 +313,18 @@ void Juego::MensajeJuego()
 		sprintf ( string,"GANASTE!");
 		dbText (650,300, string );
 		dbSetTextSize(60);
-
+		
 	}
 	if ( CantidadHuevos > 0 && CantidadAves == 0 )
 	{
-		char string[200];
-		sprintf ( string, "GAME OVER!!");
-		dbText (650,300, string );
-		dbSetTextSize(60);
+		char string[200],strPuntaje[200];
+		sprintf ( string, "GAME OVER -.-!!");
+		dbCenterText(650,300, string );
+		sprintf ( strPuntaje, "Puntaje Final %d",Puntos);
+		dbCenterText(650,360,strPuntaje);
+		dbSetTextSize(40);
 
 	}
+	
 
 }
