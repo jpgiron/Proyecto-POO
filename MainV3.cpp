@@ -20,9 +20,6 @@ void DarkGDK ( void )
 	
 	dbSetDisplayMode(1300,628,32);
 	dbSetImageColorKey(255,0,255);//Define el contorno de la imagen
-	//dbSetWindowOn();
-	//dbMaximizeWindow();
-	//cargar imagen
 	dbDrawSpritesFirst(); 
 	dbLoadImage("BackGround2.bmp",1);		
 	dbSprite(1,0,0,1); //BackGround
@@ -34,13 +31,11 @@ void DarkGDK ( void )
 	Juego juego;
 	juego.CargarFigurasTxt();
 	juego.PintarFiguras();
-	
 
 	double resultado,h,k;
 
 	while (LoopGDK())
 	{
-		juego.MostrarPuntaje();
 		juego.MensajeJuego();
 		if (dbKeyState(0x02) == 1)
 		{
