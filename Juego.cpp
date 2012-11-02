@@ -60,7 +60,7 @@ void Juego::CargarFigurasTxt()
 	int IDSprite;
 	int IDImage;
 	string TipoObjeto;
-	ifstream Map("Mundo3.txt");
+	ifstream Map("Mundo5.txt");
 
 	while(!Map.eof())
 	{
@@ -322,9 +322,11 @@ void Juego::MensajeJuego()
 
 void Juego::DecrementarRotacionAve()
 {
-	if (Aves.at(PtrPollo)->RetornarAngulo() != 0)
+	if (CantidadAves > 0)
 	{
-		Aves.at(PtrPollo)->MenosRotateBird();
+		if (Aves.at(PtrPollo)->RetornarAngulo() != 0)
+		{
+			Aves.at(PtrPollo)->MenosRotateBird();
+		}
 	}
-
 }
