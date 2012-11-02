@@ -31,9 +31,15 @@ void Ave::moveBird(){
 
 void Ave::rotateBird()
 {
-	
 	dbRotateSprite(ID,dbSpriteAngle(ID)-1);
 	Angle=abs(dbSpriteAngle(ID));
+}
+
+void Ave::MenosRotateBird()
+{
+	dbRotateSprite(ID,dbSpriteAngle(ID)+1);
+	Angle=abs(dbSpriteAngle(ID));
+
 }
 
 int Ave::RetornarAngulo()
