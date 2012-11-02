@@ -6,7 +6,7 @@
 #include <sstream>
 #include <stdlib.h>
 #include <vector>
-
+#include <dinput.h>
 using namespace std;
 
 // the main entry point for the application is this function
@@ -42,16 +42,16 @@ void DarkGDK ( void )
 	{
 		juego.MostrarPuntaje();
 		juego.MensajeJuego();
-		if (dbKeyState(13) == 1)
+		if (dbKeyState(0x02) == 1)
 		{
-			while(dbKeyState(13) == 1);
+			while(dbKeyState(0x02) == 1);
 			juego.CargarPolloLanzar();
 
 		}
 
-		if (dbKeyState(12) == 1)
+		if (dbKeyState(0x03) == 1)
 		{
-			while(dbKeyState(12) == 1);
+			while(dbKeyState(0x03) == 1);
 			juego.MovProyectilPollo();
 		}
 		dbCircle(300,530,50);
