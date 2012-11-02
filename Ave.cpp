@@ -1,6 +1,8 @@
 #include "Ave.h"
 
 #define Radio 50
+#define PosXo 300  //Centro en X del circulo de radio 50
+#define	PosYo 530  //Centro en Y del circulo de radio 50 
 
 Ave::~Ave(void)
 {
@@ -17,7 +19,6 @@ float Ave::calculoVelocidad()
 
 float Ave::calculoAngulo()
 {
-	Angle=abs(dbSpriteAngle(ID));//En grados;
 	return (Angle*3.1415)/180;
 }
 
@@ -30,10 +31,12 @@ void Ave::moveBird(){
 
 void Ave::rotateBird()
 {
+	
 	dbRotateSprite(ID,dbSpriteAngle(ID)-1);
+	Angle=abs(dbSpriteAngle(ID));
 }
 
-float Ave::RetornarAngulo()
+int Ave::RetornarAngulo()
 {
 	return Angle;
 }
