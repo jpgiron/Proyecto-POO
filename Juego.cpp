@@ -60,7 +60,7 @@ void Juego::CargarFigurasTxt()
 	int IDSprite;
 	int IDImage;
 	string TipoObjeto;
-	ifstream Map("Mundo3.txt");
+	ifstream Map("Mundo4.txt");
 
 	while(!Map.eof())
 	{
@@ -111,7 +111,7 @@ void Juego::SumarPuntos(int Puntos)
 void Juego::MostrarPuntaje()
 {
 	char string[200];
-	sprintf ( string, "Puntaje= %d",CantidadAves);
+	sprintf ( string, "Puntaje= %d",Puntos);
 	dbText (650,600, string );
 	dbSetTextSize(30);
 }
@@ -190,7 +190,7 @@ void Juego::MovProyectilPollo()
 		PosYo = P.second;							    //22 representa la distancia del vertice superior izquiero al centro en Y
 		
 		CantidadAves--;
-		i=PosXo;
+		i=0;
 
 		if ( MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle) != -1 )
 		{
@@ -293,7 +293,7 @@ void Juego::MensajeJuego()
 		char string[200];
 		sprintf ( string,"GANASTE!");
 		dbText (650,300, string );
-		dbSetTextSize(30);
+		dbSetTextSize(60);
 
 	}
 	if ( CantidadHuevos > 0 && CantidadAves == 0 )
