@@ -131,11 +131,9 @@ void Juego::MoverPollo(int iX,int iY,int IDSprite)
 void Juego::RotarPollo(int IDSprite)
 {
 	/* Condicion Necesaria Para para que el Ave solo tenga una rotacion de hasta 90 grados  */
-	if (Aves.at(IDSprite)->RetornarAngulo() < 90)
+	if (Aves.at(IDSprite)->RetornarAngulo() < 89)
 	{
-		
 		Aves.at(IDSprite)->rotateBird();
-
 	}
 
 }
@@ -320,5 +318,14 @@ void Juego::MensajeJuego()
 
 	}
 	
+
+}
+
+void Juego::DecrementarRotacionAve()
+{
+	if (Aves.at(PtrPollo)->RetornarAngulo() >= 0)
+	{
+		Aves.at(PtrPollo)->MenosRotateBird();
+	}
 
 }

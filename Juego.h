@@ -17,6 +17,7 @@
 #include <fstream>
 #include <string>
 
+
 #define PIXEL 1300
 
 using namespace std;
@@ -72,5 +73,7 @@ public:
 	bool VerificarSiHayPollo();
 
 	void MensajeJuego();
+
+	void DecrementarRotacionAve();
 };
 #endif
