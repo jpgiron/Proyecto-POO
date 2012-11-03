@@ -66,6 +66,8 @@ public:
 
 	void MovProyectilPollo();
 
+	void FuncionRespuestaColision(int iAve,int iObstaculo);
+
 	int  VerificarColisionObjetos(pareja PosPollo);
 
 	void CargarPolloLanzar();

@@ -212,13 +212,9 @@ void Juego::MovProyectilPollo()
 					MoverPollo(i+PosXo,y,PtrPollo);
 				}
 
-				else                  // Elimina las Figuras que Colisionaron
+				else                  // Colisiono un Ave con algun Obstaculo
 				{
-					dbDeleteSprite(Aves.at(PtrPollo)->RetornarIDSprite());
-					dbDeleteSprite(Enemigos.at(Verificar)->RetornarIDSprite());
-					int p;
-					p = Enemigos.at(Verificar)->getPuntaje();
-					SumarPuntos(p);
+					
 					PtrPollo++;
 					return;
 				}
@@ -233,6 +229,20 @@ void Juego::MovProyectilPollo()
 		}
 	}
 }
+
+/* Este metodo se encarga de borrar los Sprites los cuales colisionaron si la vida es 1 */
+
+void FuncionRespuestaColision(int iAve,int iObstaculo)
+{
+	if ( Aves.at(Ptr) )
+	dbDeleteSprite(Aves.at(PtrPollo)->RetornarIDSprite());
+	dbDeleteSprite(Enemigos.at(Verificar)->RetornarIDSprite());
+	int p;
+	p = Enemigos.at(Verificar)->getPuntaje();
+	SumarPuntos(p);
+	
+}
+
 
 /* Verifica si algun objeto del vector Pollo Collisiona con un obstaculo o con un Huevo 
    Retorna un entero que representa la ubicacion de la Figura con la que el pollo Colisiono */
