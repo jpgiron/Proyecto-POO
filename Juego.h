@@ -68,6 +68,8 @@ public:
 
 	void FuncionRespuestaColision(int iAve,int iObstaculo);
 
+	void ActualizarCantidadHuevos(int iObstaculo);
+	
 	int  VerificarColisionObjetos(pareja PosPollo);
 
 	void CargarPolloLanzar();
