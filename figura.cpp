@@ -36,6 +36,15 @@ int figura::RetornarIDSprite()
 	return ID;
 
 }
+
+int figura::RetornarVidas()
+{
+
+	return vidas;
+
+}
+
+
 string figura::getIdentificador()
 {
 	return Identificador;

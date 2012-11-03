@@ -26,15 +26,10 @@ public:
 	//sets
 	void setIdentificador(string NombreFigura);
 	virtual void setCoords(int PosX,int PosY);
-	
 	Pareja getCoord();
 	virtual void dibujar();
-	//virtual void moveBird(){}
 	int RetornarIDSprite();
-
-	//virtual void  rotateBird(){}
-	//virtual float calculoAngulo(){ return 0.1;}
-	//virtual float calculoVelocidad(){ return 0.1;}
+	int RetornarVidas();
 	string getIdentificador();
 };
 
