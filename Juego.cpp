@@ -215,10 +215,14 @@ void Juego::MovProyectilPollo()
 
 				else                  // Colisiono un Ave con algun Obstaculo
 				{
-					FuncionRespuestaColision(Verificar);	
+					if(FuncionRespuestaColision(Verificar))
+					{
+						/* Si retorna true es por que el Ave no tiene mas vidas */
+						PtrPollo++;
+						return;
+					}
 					//dbDeleteSprite(Aves.at(PtrPollo)->RetornarIDSprite());	
 					//dbDeleteSprite(Enemigos.at(Verificar)->RetornarIDSprite());
-					return;
 				}
 				
 			}
@@ -240,22 +244,11 @@ bool Juego::FuncionRespuestaColision(int iObstaculo)
 	int VidaAve			= Aves.at(PtrPollo)->RetornarVidas();
 	int VidaObstaculo	= Enemigos.at(iObstaculo)->RetornarVidas();
 
-	/*if ( VidaAve == 1 )
-	{
-		dbDeleteSprite(Aves.at(PtrPollo)->RetornarIDSprite());	
-		return;
-	}
-	
-	if ( VidaAve > 1)
-	{
-		dbDeleteSprite(Aves.at(PtrPollo)->RetornarIDSprite());	
-		Aves.at(PtrPollo)->SetVidas(VidaAve--);
-	}
-	
+		
 	if ( VidaObstaculo > 1)
 	{
-		Enemigos.at(iObstaculo)->SetVidas(VidaObstaculo--);
-
+		VidaObstaculo--;
+		Enemigos.at(iObstaculo)->SetVidas(VidaObstaculo);
 	}
 
 	if ( VidaObstaculo == 1 )
@@ -264,10 +257,22 @@ bool Juego::FuncionRespuestaColision(int iObstaculo)
 		p = Enemigos.at(iObstaculo)->getPuntaje();
 		SumarPuntos(p);
 		ActualizarCantidadHuevos(iObstaculo);
-	}	*/
-	dbDeleteSprite(Aves.at(PtrPollo)->RetornarIDSprite());	
-	dbDeleteSprite(Enemigos.at(iObstaculo)->RetornarIDSprite());
+	}
+
+	if ( VidaAve == 1 )
+	{
+		dbDeleteSprite(Aves.at(PtrPollo)->RetornarIDSprite());	
+		return true;
+	}
 	
+	if ( VidaAve > 1)
+	{
+		VidaAve--;
+		Aves.at(PtrPollo)->SetVidas(VidaAve);
+		
+	}
+
+	return false;
 }
 
 /* Actualiza la cantidad de Huevos en el Mundo */
