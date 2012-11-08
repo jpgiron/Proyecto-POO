@@ -191,6 +191,7 @@ void Juego::MovProyectilPollo()
 	{
 		Angle = Aves.at(PtrPollo)->calculoAngulo();
 		Vo	  = Aves.at(PtrPollo)->calculoVelocidad();
+		P     = Aves.at(PtrPollo)->getCoord();
 		
 		PosXo = P.first;								//22 representa la distancia del vertice superior izquiero al centro en x
 		PosYo = P.second;							    //22 representa la distancia del vertice superior izquiero al centro en Y
@@ -204,6 +205,7 @@ void Juego::MovProyectilPollo()
 			{
 				y = MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle);
 				MostrarPuntaje();
+				P = Aves.at(PtrPollo)->getCoord();
 				Verificar = VerificarColisionObjetos();
 						
 				if (Verificar == -1)  // -1 significa que no colisiono con nada
