@@ -66,11 +66,11 @@ public:
 
 	void MovProyectilPollo();
 
-	void FuncionRespuestaColision(int iAve,int iObstaculo);
+	bool FuncionRespuestaColision(int iObstaculo);
 
 	void ActualizarCantidadHuevos(int iObstaculo);
 	
-	int  VerificarColisionObjetos(pareja PosPollo);
+	int  VerificarColisionObjetos();
 
 	void CargarPolloLanzar();
 
