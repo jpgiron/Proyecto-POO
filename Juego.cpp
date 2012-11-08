@@ -111,7 +111,8 @@ void Juego::SumarPuntos(int Puntos)
 void Juego::MostrarPuntaje()
 {
 	char string[200];
-	sprintf ( string, "Puntaje= %d",Puntos);
+	//sprintf ( string, "Puntaje= %d",Puntos);
+	sprintf(string,"Vidas = %d",CantidadHuevos);
 	dbText (650,600, string );
 	dbSetTextSize(30);
 }
@@ -190,7 +191,6 @@ void Juego::MovProyectilPollo()
 	{
 		Angle = Aves.at(PtrPollo)->calculoAngulo();
 		Vo	  = Aves.at(PtrPollo)->calculoVelocidad();
-		P     = Aves.at(PtrPollo)->getCoord();
 		
 		PosXo = P.first;								//22 representa la distancia del vertice superior izquiero al centro en x
 		PosYo = P.second;							    //22 representa la distancia del vertice superior izquiero al centro en Y
@@ -200,12 +200,11 @@ void Juego::MovProyectilPollo()
 
 		if ( MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle) != -1 )
 		{
-			for ( ; i<PIXEL ; i+=10)
+			for ( ; i<PIXEL ; i+=3)
 			{
 				y = MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle);
 				MostrarPuntaje();
-				P = Aves.at(PtrPollo)->getCoord();
-				Verificar = VerificarColisionObjetos(P);
+				Verificar = VerificarColisionObjetos();
 						
 				if (Verificar == -1)  // -1 significa que no colisiono con nada
 				{
@@ -214,9 +213,11 @@ void Juego::MovProyectilPollo()
 
 				else                  // Colisiono un Ave con algun Obstaculo
 				{
+					//FuncionRespuestaColision(PtrPollo,Verificar);	
+					dbDeleteSprite(Aves.at(PtrPollo)->RetornarIDSprite());	
+					dbDeleteSprite(Enemigos.at(Verificar)->RetornarIDSprite());
 					
-					FuncionRespuestaColision(PtrPollo,Verificar);
-					
+					return;
 				}
 				
 			}
@@ -232,26 +233,34 @@ void Juego::MovProyectilPollo()
 
 /* Este metodo se encarga de borrar los Sprites los cuales colisionaron si la vida es 1 */
 
-void Juego::FuncionRespuestaColision(int iAve,int iObstaculo)
+void Juego::FuncionRespuestaColision(int iObstaculo)
 {
 	int p;
-	int VidaAve			= Aves.at(iAve)->RetornarVidas();
+	int VidaAve			= Aves.at(PtrPollo)->RetornarVidas();
 	int VidaObstaculo	= Enemigos.at(iObstaculo)->RetornarVidas();
 
-	if ( VidaAve > 1 )
+	if ( VidaAve == 1 )
 	{
-		dbDeleteSprite(Aves.at(iAve)->RetornarIDSprite());	
-		Aves.at(iAve)->SetVidas(VidaAve--);
-		PtrPollo++;
+		dbDeleteSprite(Aves.at(PtrPollo)->RetornarIDSprite());	
 		return;
 	}
 	
+	if ( VidaAve > 1)
+	{
+		dbDeleteSprite(Aves.at(PtrPollo)->RetornarIDSprite());	
+		Aves.at(PtrPollo)->SetVidas(VidaAve--);
+	}
+	
+	if ( VidaObstaculo > 1)
+	{
+		Enemigos.at(iObstaculo)->SetVidas(VidaObstaculo--);
+
+	}
+
 	if ( VidaObstaculo == 1 )
 	{
 		dbDeleteSprite(Enemigos.at(iObstaculo)->RetornarIDSprite());
 		p = Enemigos.at(iObstaculo)->getPuntaje();
-		Enemigos.at(iObstaculo)->SetVidas(VidaObstaculo--);
-		Aves.at(iAve)->SetVidas(VidaAve--);
 		SumarPuntos(p);
 		ActualizarCantidadHuevos(iObstaculo);
 	}	
@@ -271,7 +280,7 @@ void Juego::ActualizarCantidadHuevos(int iObstaculo)
 /* Verifica si algun objeto del vector Pollo Collisiona con un obstaculo o con un Huevo 
    Retorna un entero que representa la ubicacion de la Figura con la que el pollo Colisiono */
 
-int Juego::VerificarColisionObjetos(pareja PosPollo) 
+int Juego::VerificarColisionObjetos() 
 {
 	int i=0;
 	for ( ; i < (int) Enemigos.size() ; i++ )
@@ -279,8 +288,9 @@ int Juego::VerificarColisionObjetos(pareja PosPollo)
 		int ID;
 		ID = Enemigos.at(i)->RetornarIDSprite();
 		int ID_Pollo = Aves.at(PtrPollo)->RetornarIDSprite();
-		if ( dbSpriteCollision(ID_Pollo,ID) == 1 && ID_Pollo != ID)
+		if ( dbSpriteCollision(ID_Pollo,ID) == 1)
 		{
+			//Colisiono
 			return i;
 		}
 	}
