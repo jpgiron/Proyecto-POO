@@ -353,10 +353,12 @@ void Juego::MensajeJuego()
 	
 	if ( CantidadHuevos == 0 )
 	{
-		char string[200];
-		sprintf ( string,"GANASTE!");
-		dbText (650,300, string );
-		dbSetTextSize(60);
+		char string[200],strPuntaje[200];
+		sprintf ( string, "GANASTE!!");
+		dbCenterText(650,300, string );
+		sprintf ( strPuntaje, "Puntaje Final %d",Puntos);
+		dbCenterText(650,360,strPuntaje);
+		dbSetTextSize(40);
 		
 	}
 	if ( CantidadHuevos > 0 && CantidadAves == 0 )
