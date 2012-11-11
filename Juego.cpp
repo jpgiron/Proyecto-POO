@@ -196,7 +196,7 @@ void Juego::MostrarTrayectoria()
 
 	if ( MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle) != -1 )
 	{
-		for ( ; i<100 ; i+=5)
+		for ( ; i<200 ; i+=5)
 		{
 			y = MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle);
 			/* Muestra 5 Puntos indicando la trayectoria que tiene el Ave en esa posicion y angulo indicada */
@@ -229,7 +229,7 @@ void Juego::MovProyectilPollo()
 
 		if ( MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle) != -1 )
 		{
-			for ( ; i<PIXEL ; i+=5)
+			for ( ; i<PIXEL ; i+=8)
 			{
 				y = MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle);
 				MostrarPuntaje();
@@ -395,10 +395,7 @@ void Juego::MensajeJuego()
 		sprintf ( strPuntaje, "Puntaje Final %d",Puntos);
 		dbCenterText(650,360,strPuntaje);
 		dbSetTextSize(40);
-
 	}
-	
-
 }
 
 void Juego::DecrementarRotacionAve()
@@ -407,7 +404,10 @@ void Juego::DecrementarRotacionAve()
 	{
 		if (Aves.at(PtrPollo)->RetornarAngulo() != 0)
 		{
+
 			Aves.at(PtrPollo)->MenosRotateBird();
+			MostrarTrayectoria();
 		}
 	}
+
 }
