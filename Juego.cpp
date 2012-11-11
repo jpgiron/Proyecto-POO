@@ -389,10 +389,9 @@ void Juego::MensajeJuego()
 	}
 	if ( CantidadHuevos > 0 && CantidadAves == 0 )
 	{
-		char string[200],strPuntaje[200];
-		dbText(650,240,"Presiona Enter Para Intentar de Nuevo..");
-		sprintf ( string, "GAME OVER -.-!!");
-		dbCenterText(650,300, string );
+		char strPuntaje[200];
+		dbCenterText(650,240,"Presiona Enter Para Intentar de Nuevo..");
+		dbCenterText(650,300, "GAME OVER -.-!!" );
 		sprintf ( strPuntaje, "Puntaje Final %d",Puntos);
 		dbCenterText(650,360,strPuntaje);
 		dbSetTextSize(40);
