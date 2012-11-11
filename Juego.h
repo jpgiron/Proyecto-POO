@@ -42,7 +42,7 @@ private:
 	
 	int Puntos;
 
-	int PtrPollo;
+	int PtrPollo; //Posicion Pollo Actual
 
 public:
 	Juego(void);
@@ -75,6 +75,8 @@ public:
 	void CargarPolloLanzar();
 
 	bool VerificarSiHayPollo();
+
+	void MostrarTrayectoria();
 
 	void MensajeJuego();
 

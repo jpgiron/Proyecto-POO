@@ -169,16 +169,38 @@ void Juego::VerificarMousePos(int iX,int iY,int iBoton)
 			{
 				if (iBoton==1)
 				{
-					
+					MostrarTrayectoria();
 					MoverPollo(iX,iY,PtrPollo);
 				}
 				if (iBoton==2)
 				{
+					MostrarTrayectoria();
 					RotarPollo(PtrPollo);
 					
 				}
 			}
 			
+		}
+	}
+}
+
+void Juego::MostrarTrayectoria()
+{
+	float Angle	= Aves.at(PtrPollo)->calculoAngulo();
+	float Vo	= Aves.at(PtrPollo)->calculoVelocidad();
+	pareja P	= Aves.at(PtrPollo)->getCoord();
+	int y;
+	int PosXo	= P.first;								
+	int PosYo	= P.second;							    
+	int i		=0;
+
+	if ( MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle) != -1 )
+	{
+		for ( ; i<100 ; i+=5)
+		{
+			y = MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle);
+			/* Muestra 5 Puntos indicando la trayectoria que tiene el Ave en esa posicion y angulo indicada */
+			dbCircle(i+PosXo,y,1);
 		}
 	}
 }
@@ -199,8 +221,8 @@ void Juego::MovProyectilPollo()
 		Vo	  = Aves.at(PtrPollo)->calculoVelocidad();
 		P     = Aves.at(PtrPollo)->getCoord();
 		
-		PosXo = P.first;								//22 representa la distancia del vertice superior izquiero al centro en x
-		PosYo = P.second;							    //22 representa la distancia del vertice superior izquiero al centro en Y
+		PosXo = P.first;								
+		PosYo = P.second;							   
 		
 		CantidadAves--;
 		i=0;
@@ -211,7 +233,7 @@ void Juego::MovProyectilPollo()
 			{
 				y = MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle);
 				MostrarPuntaje();
-				P = Aves.at(PtrPollo)->getCoord();
+				//P = Aves.at(PtrPollo)->getCoord();
 				Verificar = VerificarColisionObjetos();
 						
 				if (Verificar == -1)  // -1 significa que no colisiono con nada
@@ -227,8 +249,6 @@ void Juego::MovProyectilPollo()
 						PtrPollo++;
 						return;
 					}
-					//dbDeleteSprite(Aves.at(PtrPollo)->RetornarIDSprite());	
-					//dbDeleteSprite(Enemigos.at(Verificar)->RetornarIDSprite());
 				}
 				
 			}
