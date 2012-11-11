@@ -111,8 +111,7 @@ void Juego::SumarPuntos(int Puntos)
 void Juego::MostrarPuntaje()
 {
 	char string[200];
-	//sprintf ( string, "Puntaje= %d",Puntos);
-	sprintf(string,"Vidas = %d",CantidadHuevos);
+	sprintf ( string, "Puntaje= %d",Puntos);
 	dbText (650,600, string );
 	dbSetTextSize(30);
 }
@@ -144,6 +143,9 @@ void Juego::VerificarMousePos(int iX,int iY,int iBoton)
 {
 	double resultado;
 	int ptr = 0;
+	
+	int Altom;
+	int Anchom;
 
 	if (CantidadAves > 0)
 	{
@@ -151,7 +153,11 @@ void Juego::VerificarMousePos(int iX,int iY,int iBoton)
 		int posx,posy;
 		posx=P.first;
 		posy=P.second;
-		if (iX>=posx-24 && iY >=posy-22 && iX <=posx+24 && iY <=posy+22 )
+
+		Altom  = dbSpriteHeight(Aves.at(PtrPollo)->RetornarIDSprite())/2;
+		Anchom = dbSpriteWidth(Aves.at(PtrPollo)->RetornarIDSprite())/2;
+
+		if (iX>=posx-Anchom && iY >=posy-Altom && iX <=posx+Anchom && iY <=posy+Altom )
 		{
 			
 			/*  Calcula Si el Pollo esta dentro del circulo para lanzarse */
@@ -201,7 +207,7 @@ void Juego::MovProyectilPollo()
 
 		if ( MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle) != -1 )
 		{
-			for ( ; i<PIXEL ; i+=3)
+			for ( ; i<PIXEL ; i+=5)
 			{
 				y = MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle);
 				MostrarPuntaje();
@@ -346,7 +352,7 @@ bool Juego::VerificarSiHayPollo()
 
 void Juego::MensajeJuego()
 {
-	if (CantidadAves > 0)
+	if ( CantidadAves > 0 && CantidadHuevos > 0)
 	{
 		MostrarPuntaje();
 	}
