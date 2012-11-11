@@ -379,9 +379,8 @@ void Juego::MensajeJuego()
 	
 	if ( CantidadHuevos == 0 )
 	{
-		char string[200],strPuntaje[200];
-		sprintf ( string, "GANASTE!!");
-		dbCenterText(650,300, string );
+		char strPuntaje[200];
+		dbCenterText(650,300,"GANASTE!!" );
 		sprintf ( strPuntaje, "Puntaje Final %d",Puntos);
 		dbCenterText(650,360,strPuntaje);
 		dbSetTextSize(40);
