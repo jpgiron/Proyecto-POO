@@ -37,20 +37,28 @@ void DarkGDK ( void )
 	while (LoopGDK())
 	{
 		juego.MensajeJuego();
+		dbCircle(300,530,50);
+		
+		/* Num1 Carga El pollo Para Lanzar  */
 		if (dbKeyState(0x02) == 1)
 		{
 			while(dbKeyState(0x02) == 1);
 			juego.CargarPolloLanzar();
 
 		}
-
+		
+		/* Num2 Dispara el Ave */
 		if (dbKeyState(0x03) == 1)
 		{
 			while(dbKeyState(0x03) == 1);
 			juego.MovProyectilPollo();
 		}
-		dbCircle(300,530,50);
-		
+
+		/* Num3 Decrementa Angulo del Ave*/
+		if (dbKeyState(0x04) == 1) 
+		{
+			juego.DecrementarRotacionAve();
+		}	
 		
 		if (dbMouseClick()==1)
 		{
@@ -66,11 +74,15 @@ void DarkGDK ( void )
 			int pointY=dbMouseY();
 			juego.VerificarMousePos(pointX,pointY,2);
 		}
+		
+		if (dbKeyState(0x1C) == 1)
+		{
+			while (dbKeyState(0x1C) == 1);
+			juego.ReiniciarJuego();
 
+		}
 
 		dbSync();
-		
 	}
-	
 	return;
 }
