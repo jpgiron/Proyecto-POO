@@ -5,7 +5,6 @@ Juego::Juego(void)
 	CantidadAves	=	0; 
 	Puntos			=	0;
 	CantidadHuevos	=	0;
-	PtrPollo		=	0;
 	//Las imagenes hacen parte del Juego
 	dbLoadImage ( "PolloVolador2.bmp",			2);
 	dbLoadImage ( "alcon.bmp",					3);
@@ -44,8 +43,6 @@ void Juego::PintarFiguras()
 		Figuras.at(i)->dibujar();
 		
 	}
-	
-
 }
 
 /*  Carga las Figuras desde un archivo TXT. el orden del archivo es :
@@ -53,8 +50,7 @@ void Juego::PintarFiguras()
 	ID_Sprite(int) ID_Imagen(int) CoordX(int) CoordY(int) Identificador(string)*/
 
 void Juego::CargarFigurasTxt()
-{
-	
+{	
 	int posx;
 	int posy;
 	int IDSprite;
@@ -118,23 +114,21 @@ void Juego::MostrarPuntaje()
 
 /* Actualiza la Posicion del Pollo */
 
-void Juego::MoverPollo(int iX,int iY,int IDSprite)
+void Juego::MoverPollo(int iX,int iY)
 {
-	Aves.at(IDSprite)->setCoords(iX,iY);
-	Aves.at(IDSprite)->moveBird();
-		
+	Aves.at(0)->setCoords(iX,iY);
+	Aves.at(0)->moveBird();
 }
 
 /* Actualiza el Angulo de disparo del Pollo */
 
-void Juego::RotarPollo(int IDSprite)
+void Juego::RotarPollo()
 {
 	/* Condicion Necesaria Para para que el Ave solo tenga una rotacion de hasta 90 grados  */
-	if (Aves.at(IDSprite)->RetornarAngulo() < 89)
+	if (Aves.at(0)->RetornarAngulo() < 89)
 	{
-		Aves.at(IDSprite)->rotateBird();
+		Aves.at(0)->rotateBird();
 	}
-
 }
 
 /* Verifica si la posicion del Mouse esta dentro de un Objeto Pollo  */
@@ -142,21 +136,19 @@ void Juego::RotarPollo(int IDSprite)
 void Juego::VerificarMousePos(int iX,int iY,int iBoton)
 {
 	double resultado;
-	int ptr = 0;
 	
 	int Altom;
 	int Anchom;
 
 	if (CantidadAves > 0)
 	{
-		pareja P=Aves.at(PtrPollo)->getCoord();
+		pareja P=Aves.at(0)->getCoord();
 		int posx,posy;
 		posx=P.first;
 		posy=P.second;
-
-		Altom  = dbSpriteHeight(Aves.at(PtrPollo)->RetornarIDSprite())/2;
-		Anchom = dbSpriteWidth(Aves.at(PtrPollo)->RetornarIDSprite())/2;
-
+		Altom  = dbSpriteHeight(Aves.at(0)->RetornarIDSprite())/2;
+		Anchom = dbSpriteWidth(Aves.at(0)->RetornarIDSprite())/2;
+		
 		if (iX>=posx-Anchom && iY >=posy-Altom && iX <=posx+Anchom && iY <=posy+Altom )
 		{
 			
@@ -170,13 +162,13 @@ void Juego::VerificarMousePos(int iX,int iY,int iBoton)
 				if (iBoton==1)
 				{
 					MostrarTrayectoria();
-					MoverPollo(iX,iY,PtrPollo);
+					MoverPollo(iX,iY);
+
 				}
 				if (iBoton==2)
 				{
 					MostrarTrayectoria();
-					RotarPollo(PtrPollo);
-					
+					RotarPollo();
 				}
 			}
 			
@@ -186,13 +178,19 @@ void Juego::VerificarMousePos(int iX,int iY,int iBoton)
 
 void Juego::MostrarTrayectoria()
 {
+	/*
 	float Angle	= Aves.at(PtrPollo)->calculoAngulo();
 	float Vo	= Aves.at(PtrPollo)->calculoVelocidad();
 	pareja P	= Aves.at(PtrPollo)->getCoord();
+	*/
+	float Angle	= Aves.at(0)->calculoAngulo();
+	float Vo	= Aves.at(0)->calculoVelocidad();
+	pareja P	= Aves.at(0)->getCoord();
+
 	int y;
 	int PosXo	= P.first;								
 	int PosYo	= P.second;							    
-	int i		=0;
+	int i		= 0;
 
 	if ( MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle) != -1 )
 	{
@@ -217,28 +215,25 @@ void Juego::MovProyectilPollo()
 	int Verificar;
 	if (CantidadAves > 0 && VerificarSiHayPollo())
 	{
-		Angle = Aves.at(PtrPollo)->calculoAngulo();
-		Vo	  = Aves.at(PtrPollo)->calculoVelocidad();
-		P     = Aves.at(PtrPollo)->getCoord();
+		Angle = Aves.at(0)->calculoAngulo();
+		Vo	  = Aves.at(0)->calculoVelocidad();
+		P     = Aves.at(0)->getCoord();
 		
 		PosXo = P.first;								
 		PosYo = P.second;							   
-		
-		CantidadAves--;
 		i=0;
 
 		if ( MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle) != -1 )
 		{
-			for ( ; i<PIXEL ; i+=8)
+			for ( ; i<PIXEL ; i+=6)
 			{
 				y = MotorFisico.CalculoAltura(Vo,PosXo,PosYo,i,Angle);
 				MostrarPuntaje();
-				//P = Aves.at(PtrPollo)->getCoord();
 				Verificar = VerificarColisionObjetos();
 						
 				if (Verificar == -1)  // -1 significa que no colisiono con nada
 				{
-					MoverPollo(i+PosXo,y,PtrPollo);
+					MoverPollo(i+PosXo,y);
 				}
 
 				else                  // Colisiono un Ave con algun Obstaculo
@@ -246,18 +241,21 @@ void Juego::MovProyectilPollo()
 					if(FuncionRespuestaColision(Verificar))
 					{
 						/* Si retorna true es por que el Ave no tiene mas vidas */
-						PtrPollo++;
+						Aves.erase(Aves.begin());
+						CantidadAves = (int) Aves.size();
 						return;
 					}
 				}
 				
 			}
-			PtrPollo++;
+			Aves.erase(Aves.begin());
+			CantidadAves = (int) Aves.size();
 		}
 		else
 		{
-			dbDeleteSprite(Aves.at(PtrPollo)->RetornarIDSprite());
-			PtrPollo++;
+			dbDeleteSprite(Aves.at(0)->RetornarIDSprite());
+			Aves.erase(Aves.begin());
+			CantidadAves = (int) Aves.size();
 		}
 	}
 }
@@ -267,7 +265,7 @@ void Juego::MovProyectilPollo()
 bool Juego::FuncionRespuestaColision(int iObstaculo)
 {
 	int p;
-	int VidaAve			= Aves.at(PtrPollo)->RetornarVidas();
+	int VidaAve			= Aves.at(0)->RetornarVidas();
 	int VidaObstaculo	= Enemigos.at(iObstaculo)->RetornarVidas();
 
 		
@@ -279,23 +277,27 @@ bool Juego::FuncionRespuestaColision(int iObstaculo)
 
 	if ( VidaObstaculo == 1 )
 	{
-		dbDeleteSprite(Enemigos.at(iObstaculo)->RetornarIDSprite());
 		p = Enemigos.at(iObstaculo)->getPuntaje();
-		SumarPuntos(p);
+		dbDeleteSprite(Enemigos.at(iObstaculo)->RetornarIDSprite());
+		//
+		
+		//
 		ActualizarCantidadHuevos(iObstaculo);
+		Enemigos.erase(Enemigos.begin()+iObstaculo);
+		SumarPuntos(p);
+		
 	}
 
 	if ( VidaAve == 1 )
 	{
-		dbDeleteSprite(Aves.at(PtrPollo)->RetornarIDSprite());	
+		dbDeleteSprite(Aves.at(0)->RetornarIDSprite());
 		return true;
 	}
 	
 	if ( VidaAve > 1)
 	{
 		VidaAve--;
-		Aves.at(PtrPollo)->SetVidas(VidaAve);
-		
+		Aves.at(0)->SetVidas(VidaAve);
 	}
 
 	return false;
@@ -322,7 +324,7 @@ int Juego::VerificarColisionObjetos()
 	{
 		int ID;
 		ID = Enemigos.at(i)->RetornarIDSprite();
-		int ID_Pollo = Aves.at(PtrPollo)->RetornarIDSprite();
+		int ID_Pollo = Aves.at(0)->RetornarIDSprite();
 		if ( dbSpriteCollision(ID_Pollo,ID) == 1)
 		{
 			//Colisiono
@@ -339,7 +341,7 @@ void Juego::CargarPolloLanzar()
 	{
 		if (!VerificarSiHayPollo())
 		{
-			MoverPollo(300,530,PtrPollo);
+			MoverPollo(300,530);
 		}
 	}
 }
@@ -354,20 +356,21 @@ bool Juego::VerificarSiHayPollo()
 	
 	int	h,k;
 	double Hi,Ki;
-	for(int i=PtrPollo; i < (int) Aves.size() ; i++ )
+	
+	Tmp = Aves.at(0)->getCoord();
+	h	= Tmp.first  - x;
+	k	= Tmp.second - y;
+	Hi	= pow((double) h ,2);
+	Ki	= pow((double) k ,2);
+	
+	if ( (Hi+Ki) <= pow ((double) 50,2) )
 	{
-		Tmp = Aves.at(i)->getCoord();
-		h	= Tmp.first  - x;
-		k	= Tmp.second - y;
-		Hi	= pow((double) h ,2);
-		Ki	= pow((double) k ,2);
-		
-		if ( (Hi+Ki) <= pow ((double) 50,2) )
-		{
-			return true;
-		}
+		return true;
 	}
-	return false;
+	else
+	{
+		return false;
+	}
 }
 
 void Juego::MensajeJuego()
@@ -402,10 +405,10 @@ void Juego::DecrementarRotacionAve()
 {
 	if (CantidadAves > 0)
 	{
-		if (Aves.at(PtrPollo)->RetornarAngulo() != 0)
+		if (Aves.at(0)->RetornarAngulo() != 0)
 		{
 
-			Aves.at(PtrPollo)->MenosRotateBird();
+			Aves.at(0)->MenosRotateBird();
 			MostrarTrayectoria();
 		}
 	}
@@ -422,41 +425,13 @@ void Juego::ReiniciarJuego()
 		CantidadHuevos=0;
 		CargarFigurasTxt();
 		PintarFiguras();
-		PtrPollo=0;
 		Puntos=0;
-		
-
 	}
 }
 
 void Juego::VaciarVectores()
 {
-
 	Enemigos.clear();
 	Aves.clear();
 	Figuras.clear();
-
-	/*for (int i=0 ; i < (int) Enemigos.size() ; i++)
-	{
-		dbDeleteSprite(Enemigos.at(i)->RetornarIDSprite());
-		//dbDeleteImage(i);
-		Enemigos.erase(Enemigos.begin());
-		
-	}
-
-	for (int i=0 ; i < (int) Aves.size() ; i++)
-	{
-		dbDeleteSprite(Aves.at(i)->RetornarIDSprite());
-		//dbDeleteImage(i);
-		Aves.erase(Aves.begin());
-
-	}
-	
-	for (int i=0 ; i < (int) Figuras.size() ; i++)
-	{
-		dbDeleteSprite(Figuras.at(i)->RetornarIDSprite());
-		//dbDeleteImage(i);
-		Figuras.erase(Figuras.begin());
-
-	}*/
 }
