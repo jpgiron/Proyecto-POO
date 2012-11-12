@@ -81,5 +81,9 @@ public:
 	void MensajeJuego();
 
 	void DecrementarRotacionAve();
+
+	void ReiniciarJuego();
+
+	void VaciarVectores();
 };
 #endif
