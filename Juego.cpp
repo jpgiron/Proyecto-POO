@@ -419,31 +419,44 @@ void Juego::ReiniciarJuego()
 	if ((CantidadHuevos > 0 && CantidadAves == 0 ) || (CantidadHuevos == 0 ))
 	{
 		VaciarVectores();
+		CantidadHuevos=0;
 		CargarFigurasTxt();
 		PintarFiguras();
 		PtrPollo=0;
 		Puntos=0;
+		
 
 	}
 }
 
 void Juego::VaciarVectores()
 {
-	for (int i=0 ; i < (int) Enemigos.size() ; i++)
-	{
-		Enemigos.erase(Enemigos.begin());
 
+	Enemigos.clear();
+	Aves.clear();
+	Figuras.clear();
+
+	/*for (int i=0 ; i < (int) Enemigos.size() ; i++)
+	{
+		dbDeleteSprite(Enemigos.at(i)->RetornarIDSprite());
+		//dbDeleteImage(i);
+		Enemigos.erase(Enemigos.begin());
+		
 	}
 
 	for (int i=0 ; i < (int) Aves.size() ; i++)
 	{
+		dbDeleteSprite(Aves.at(i)->RetornarIDSprite());
+		//dbDeleteImage(i);
 		Aves.erase(Aves.begin());
 
 	}
 	
 	for (int i=0 ; i < (int) Figuras.size() ; i++)
 	{
+		dbDeleteSprite(Figuras.at(i)->RetornarIDSprite());
+		//dbDeleteImage(i);
 		Figuras.erase(Figuras.begin());
 
-	}
+	}*/
 }
