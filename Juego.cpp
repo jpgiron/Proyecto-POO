@@ -380,6 +380,7 @@ void Juego::MensajeJuego()
 	if ( CantidadHuevos == 0 )
 	{
 		char strPuntaje[200];
+		dbCenterText(650,240,"Presiona Jugar de Nuevo..");
 		dbCenterText(650,300,"GANASTE!!" );
 		sprintf ( strPuntaje, "Puntaje Final %d",Puntos);
 		dbCenterText(650,360,strPuntaje);
@@ -409,4 +410,40 @@ void Juego::DecrementarRotacionAve()
 		}
 	}
 
+}
+
+
+void Juego::ReiniciarJuego()
+{
+
+	if ((CantidadHuevos > 0 && CantidadAves == 0 ) || (CantidadHuevos == 0 ))
+	{
+		VaciarVectores();
+		CargarFigurasTxt();
+		PintarFiguras();
+		PtrPollo=0;
+		Puntos=0;
+
+	}
+}
+
+void Juego::VaciarVectores()
+{
+	for (int i=0 ; i < (int) Enemigos.size() ; i++)
+	{
+		Enemigos.erase(Enemigos.begin());
+
+	}
+
+	for (int i=0 ; i < (int) Aves.size() ; i++)
+	{
+		Aves.erase(Aves.begin());
+
+	}
+	
+	for (int i=0 ; i < (int) Figuras.size() ; i++)
+	{
+		Figuras.erase(Figuras.begin());
+
+	}
 }
