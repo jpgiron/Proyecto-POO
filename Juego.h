@@ -12,6 +12,7 @@
 #include "Ornitorrinco.h"
 #include "Aguila.h"
 #include "ParedMadera.h"
+#include "ParedCemento.h"
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -42,7 +43,9 @@ private:
 	
 	int Puntos;
 
-	int PtrPollo; //Posicion Pollo Actual
+	int Mundo;
+
+	bool Jugando;
 
 public:
 	Juego(void);
@@ -56,11 +59,11 @@ public:
 
 	void SumarPuntos(int Puntos);
 
-	void MoverPollo(int iX,int iY,int IDSprite);
+	void MoverPollo(int iX,int iY);
 	
 	void MostrarPuntaje();
 
-	void RotarPollo(int IDSprite);
+	void RotarPollo();
 
 	void VerificarMousePos(int iX,int iY,int iBoton);
 
@@ -85,5 +88,9 @@ public:
 	void ReiniciarJuego();
 
 	void VaciarVectores();
+
+	void MenuMundoIzquierda();
+
+	void MenuMundoDerecha();
 };
 #endif

@@ -12,7 +12,15 @@ Juego::Juego(void)
 	dbLoadImage	( "obstaculoMadera.bmp",		5);
 	dbLoadImage ( "obstaculoMaderaAcostado.bmp",6);
 	dbLoadImage ( "Huevo.bmp",					7);
-	
+	dbLoadImage	( "Granja1.bmp",8);
+	dbLoadImage	( "Granja2.bmp",9);
+	dbLoadImage	( "Granja3.bmp",10);
+	dbLoadImage	( "Granja4.bmp",11);
+	dbLoadImage	( "Granja5.bmp",12);
+	dbLoadImage	( "obstaculoPiedra.bmp",13);
+	dbLoadImage ( "obstaculoPiedraAcostado.bmp",14);
+	Mundo			=	0;	
+	Jugando			=	false;
 }
 
 /* Share Pointer */
@@ -46,7 +54,6 @@ void Juego::PintarFiguras()
 }
 
 /*  Carga las Figuras desde un archivo TXT. el orden del archivo es :
-
 	ID_Sprite(int) ID_Imagen(int) CoordX(int) CoordY(int) Identificador(string)*/
 
 void Juego::CargarFigurasTxt()
@@ -56,39 +63,45 @@ void Juego::CargarFigurasTxt()
 	int IDSprite;
 	int IDImage;
 	string TipoObjeto;
-	ifstream Map("Mundo5.txt");
+	ifstream Map("World5.txt");
 
 	while(!Map.eof())
 	{
 		Map >> IDSprite >> IDImage >> posx >> posy >> TipoObjeto;
 		if (TipoObjeto == "Pollo")
 		{
-			AgregarFigura(new pollo(IDImage,IDSprite,posx,posy,TipoObjeto));
+			//AgregarFigura(new pollo(IDImage,IDSprite,posx,posy,TipoObjeto));
 			Aves.push_back(new pollo(IDImage,IDSprite,posx,posy,TipoObjeto));
 		}
 		if (TipoObjeto == "Ornitorrinco")
 		{
-			AgregarFigura(new Ornitorrinco(IDImage,IDSprite,posx,posy,TipoObjeto));
+			//AgregarFigura(new Ornitorrinco(IDImage,IDSprite,posx,posy,TipoObjeto));
 			Aves.push_back(new Ornitorrinco(IDImage,IDSprite,posx,posy,TipoObjeto));
 		}
 
 		if (TipoObjeto == "Aguila")
 		{
-			AgregarFigura(new Aguila(IDImage,IDSprite,posx,posy,TipoObjeto));
+			//AgregarFigura(new Aguila(IDImage,IDSprite,posx,posy,TipoObjeto));
 			Aves.push_back(new Aguila(IDImage,IDSprite,posx,posy,TipoObjeto));
 		}
 
 		if (TipoObjeto == "Obstaculo" )
 		{
-			AgregarFigura(new ParedMadera(IDImage,IDSprite,posx,posy,TipoObjeto));
+			//AgregarFigura(new ParedMadera(IDImage,IDSprite,posx,posy,TipoObjeto));
 			Enemigos.push_back(new ParedMadera(IDImage,IDSprite,posx,posy,TipoObjeto));
+		}
+		if (TipoObjeto == "ObstaculoP" )
+		{
+			//AgregarFigura(new ParedMadera(IDImage,IDSprite,posx,posy,TipoObjeto));
+			Enemigos.push_back(new ParedCemento(IDImage,IDSprite,posx,posy,TipoObjeto));
 		}
 		if (TipoObjeto == "Huevo")
 		{
-			AgregarFigura(new Huevo(IDImage,IDSprite,posx,posy,TipoObjeto));
+			//AgregarFigura(new Huevo(IDImage,IDSprite,posx,posy,TipoObjeto));
 			Enemigos.push_back(new Huevo(IDImage,IDSprite,posx,posy,TipoObjeto));
 			CantidadHuevos++;
 		}
+		AgregarFigura(new pollo(IDImage,IDSprite,posx,posy,TipoObjeto));
 	}
 	CantidadAves=(int) Aves.size();
 	Map.close();
@@ -136,7 +149,6 @@ void Juego::RotarPollo()
 void Juego::VerificarMousePos(int iX,int iY,int iBoton)
 {
 	double resultado;
-	
 	int Altom;
 	int Anchom;
 
@@ -353,16 +365,13 @@ bool Juego::VerificarSiHayPollo()
 	Pareja Tmp;		//Captura La coordenada de Cada Pollo 
 	int x = 300;	//Centro X del circulo
 	int y = 530;	//Centro Y del circulo
-	
 	int	h,k;
 	double Hi,Ki;
-	
 	Tmp = Aves.at(0)->getCoord();
 	h	= Tmp.first  - x;
 	k	= Tmp.second - y;
 	Hi	= pow((double) h ,2);
 	Ki	= pow((double) k ,2);
-	
 	if ( (Hi+Ki) <= pow ((double) 50,2) )
 	{
 		return true;
@@ -375,29 +384,30 @@ bool Juego::VerificarSiHayPollo()
 
 void Juego::MensajeJuego()
 {
-	if ( CantidadAves > 0 && CantidadHuevos > 0)
+	if ( Mundo != 0 )
 	{
-		MostrarPuntaje();
-	}
-	
-	if ( CantidadHuevos == 0 )
-	{
-		char strPuntaje[200];
-		dbCenterText(650,240,"Presiona Jugar de Nuevo..");
-		dbCenterText(650,300,"GANASTE!!" );
-		sprintf ( strPuntaje, "Puntaje Final %d",Puntos);
-		dbCenterText(650,360,strPuntaje);
-		dbSetTextSize(40);
-		
-	}
-	if ( CantidadHuevos > 0 && CantidadAves == 0 )
-	{
-		char strPuntaje[200];
-		dbCenterText(650,240,"Presiona Enter Para Intentar de Nuevo..");
-		dbCenterText(650,300, "GAME OVER -.-!!" );
-		sprintf ( strPuntaje, "Puntaje Final %d",Puntos);
-		dbCenterText(650,360,strPuntaje);
-		dbSetTextSize(40);
+		if ( CantidadAves > 0 && CantidadHuevos > 0)
+		{
+			MostrarPuntaje();
+		}
+		if ( CantidadHuevos == 0 )
+		{
+			char strPuntaje[200];
+			dbCenterText(650,240,"Presiona Jugar de Nuevo..");
+			dbCenterText(650,300,"GANASTE!!" );
+			sprintf ( strPuntaje, "Puntaje Final %d",Puntos);
+			dbCenterText(650,360,strPuntaje);
+			dbSetTextSize(40);
+		}
+		if ( CantidadHuevos > 0 && CantidadAves == 0 )
+		{
+			char strPuntaje[200];
+			dbCenterText(650,240,"Presiona Enter Para Intentar de Nuevo..");
+			dbCenterText(650,300, "GAME OVER -.-!!" );
+			sprintf ( strPuntaje, "Puntaje Final %d",Puntos);
+			dbCenterText(650,360,strPuntaje);
+			dbSetTextSize(40);
+		}
 	}
 }
 
@@ -418,7 +428,6 @@ void Juego::DecrementarRotacionAve()
 
 void Juego::ReiniciarJuego()
 {
-
 	if ((CantidadHuevos > 0 && CantidadAves == 0 ) || (CantidadHuevos == 0 ))
 	{
 		VaciarVectores();
@@ -434,4 +443,32 @@ void Juego::VaciarVectores()
 	Enemigos.clear();
 	Aves.clear();
 	Figuras.clear();
+}
+void Juego::MenuMundoIzquierda()
+{
+	sprintf ( string, "Mundo= %d",Mundo);
+	dbText (650,600, string );
+	dbSetTextSize(30);
+	if ( Mundo == 1)
+	{	
+		Mundo = 5;
+	}
+	else
+	{
+		Mundo--;
+	}
+}
+void Juego::MenuMundoDerecha()
+{
+	sprintf ( string, "Mundo= %d",Mundo);
+	dbText (650,600, string );
+	dbSetTextSize(30);
+	if ( Mundo == 5)
+	{	
+		Mundo = 1;
+	}
+	else
+	{
+		Mundo++;
+	}
 }
