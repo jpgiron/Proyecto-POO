@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef PAREDMADERA_H_
-#define PAREDMADERA_H_
+#ifndef PAREDCEMENTO_H_
+#define PAREDCEMENTO_H_
 
 #include "obstaculo.h"
 
