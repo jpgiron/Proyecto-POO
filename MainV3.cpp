@@ -29,8 +29,8 @@ void DarkGDK ( void )
 	/* Instancia Objeto Mundo */
 	
 	Juego juego;
-	juego.CargarFigurasTxt();
-	juego.PintarFiguras();
+	//juego.CargarFigurasTxt();
+	//juego.PintarFiguras();
 
 	double resultado,h,k;
 
@@ -81,7 +81,18 @@ void DarkGDK ( void )
 			juego.ReiniciarJuego();
 
 		}
-
+		
+		if (dbLeftKey() == 1)
+		{
+			while (dbLeftKey() == 1);
+			juego.MenuMundoIzquierda();
+		}
+		
+		if (dbRightKey() == 1)
+		{
+			while (dbRightKey() == 1);
+			juego.MenuMundoDerecha();
+		}
 		dbSync();
 	}
 	return;
