@@ -55,7 +55,7 @@ public:
 	
 	void PintarFiguras();
 
-	void CargarFigurasTxt();
+	void CargarFigurasTxt(string TipoMundo);
 
 	void SumarPuntos(int Puntos);
 

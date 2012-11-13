@@ -56,14 +56,16 @@ void Juego::PintarFiguras()
 /*  Carga las Figuras desde un archivo TXT. el orden del archivo es :
 	ID_Sprite(int) ID_Imagen(int) CoordX(int) CoordY(int) Identificador(string)*/
 
-void Juego::CargarFigurasTxt()
+void Juego::CargarFigurasTxt(string TipoMundo)
 {	
 	int posx;
 	int posy;
 	int IDSprite;
 	int IDImage;
+	const char *NombreArchivo;
+	NombreArchivo = TipoMundo.c_str();
 	string TipoObjeto;
-	ifstream Map("World5.txt");
+	ifstream Map(NombreArchivo);
 
 	while(!Map.eof())
 	{
@@ -384,7 +386,7 @@ bool Juego::VerificarSiHayPollo()
 
 void Juego::MensajeJuego()
 {
-	if ( Mundo != 0 )
+	if ( Jugando == true )
 	{
 		if ( CantidadAves > 0 && CantidadHuevos > 0)
 		{
@@ -409,6 +411,14 @@ void Juego::MensajeJuego()
 			dbSetTextSize(40);
 		}
 	}
+	else
+	{
+		
+		char TipoMundo[1];
+		sprintf ( TipoMundo, "Mundo %d",Mundo);
+		dbCenterText(650,600,TipoMundo);
+		
+	}
 }
 
 void Juego::DecrementarRotacionAve()
@@ -428,27 +438,65 @@ void Juego::DecrementarRotacionAve()
 
 void Juego::ReiniciarJuego()
 {
-	if ((CantidadHuevos > 0 && CantidadAves == 0 ) || (CantidadHuevos == 0 ))
+
+	if ( Jugando == false )
 	{
-		VaciarVectores();
-		CantidadHuevos=0;
-		CargarFigurasTxt();
+		string sMundo;
+		dbDeleteSprite(1);
+		dbDeleteImage(1);
+		if ( Mundo == 1)
+		{
+			sMundo = "World1.txt";
+		}
+		else if ( Mundo == 2)
+		{
+			sMundo = "World2.txt";
+		}
+		else if ( Mundo == 3)
+		{
+			sMundo = "World3.txt";
+		}
+		else if ( Mundo == 4)
+		{
+			sMundo = "World4.txt";
+		}
+		else if ( Mundo == 5)
+		{
+			sMundo = "World5.txt";
+		}
+		CargarFigurasTxt(sMundo);
 		PintarFiguras();
-		Puntos=0;
+		Jugando = true;
+	}
+	else
+	{
+		if ((CantidadHuevos > 0 && CantidadAves == 0 ) || (CantidadHuevos == 0 ))
+		{
+			VaciarVectores();
+			CantidadHuevos=0;
+//			CargarFigurasTxt();
+//			PintarFiguras();
+			Puntos=0;
+		}
 	}
 }
 
 void Juego::VaciarVectores()
 {
+	int TmpNoSprites = 0;
+	TmpNoSprites = (int) Figuras.size();
+	for ( int i=0 ; i < TmpNoSprites ; i++ )
+	{
+		dbDeleteSprite(i);
+	}
 	Enemigos.clear();
 	Aves.clear();
 	Figuras.clear();
+
 }
 void Juego::MenuMundoIzquierda()
 {
-	sprintf ( string, "Mundo= %d",Mundo);
-	dbText (650,600, string );
-	dbSetTextSize(30);
+	
 	if ( Mundo == 1)
 	{	
 		Mundo = 5;
@@ -460,9 +508,6 @@ void Juego::MenuMundoIzquierda()
 }
 void Juego::MenuMundoDerecha()
 {
-	sprintf ( string, "Mundo= %d",Mundo);
-	dbText (650,600, string );
-	dbSetTextSize(30);
 	if ( Mundo == 5)
 	{	
 		Mundo = 1;
